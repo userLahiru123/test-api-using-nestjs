@@ -10,12 +10,7 @@ export class ProductService {
     private selectedProduct: Product;
 
     isProductIdContains(productId: String): boolean {
-        this.products.forEach(product=>{
-            if(product.productId == productId){
-                return true;
-            }
-        });
-        return false;
+        return this.products.some(product => product.productId == productId);
     }
 
     saveProduct(product: Product): any {
