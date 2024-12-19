@@ -6,12 +6,8 @@ import { ErrorRespose, SuccessResponse } from 'src/utils/custom_response';
 export class ProductService {
 
     private products: Product[] = [new Product("p001", "rice", 2), new Product("p002", "sugar", 4)];
-
     readonly regex = /^[A-Za-z]+$/;
-
-    // all(): any {
-    //     return new SuccessResponse(this.products);
-    // }
+    private selectedProduct: Product;
 
 
     saveProduct(product: Product): any {
@@ -38,7 +34,11 @@ export class ProductService {
                 return new ErrorRespose("invalid product id");
             }
 
-            return new SuccessResponse(this.products.find(product => product.productId === productId));
+            this.selectedProduct = this.products.find(product => product.productId === productId);
+            if (this.selectedProduct == null || undefined) {
+                return new SuccessResponse("empty");
+            }
+            return new SuccessResponse(this.selectedProduct);
 
         } catch (error) {
             return new ErrorRespose(error);
@@ -57,10 +57,10 @@ export class ProductService {
 
     deleteById(productId: String): any {
         try {
-            if(productId == null || undefined){
+            if (productId == null || undefined) {
                 return new ErrorRespose("invalid product id");
             }
-            this.products.slice(this.products.findIndex(product => product.productId === productId), 1);
+            this.products = this.products.filter(product => product.productId != productId);
 
             return new SuccessResponse(this.products);
         } catch (error) {
@@ -68,51 +68,29 @@ export class ProductService {
         }
     }
 
-    updateName(productId: String, name: String): any {
-        // for (let index = 0; index < this.products.length; index++) {
-        //     const element = this.products[index];
-        //     if (element.productId = productId) {
-        //         element.name = name;
-        //     }
-        // }
-
+    update(productId: String, updatedProduct: Partial<Product>): any {
         try {
-            if(productId == null || undefined){
+            if (productId == null || undefined) {
                 return new ErrorRespose("invalid product id");
             }
 
-            if(name.length == 0 || name.length >10 || !this.regex.test(name.toString())){
-                return new ErrorRespose("invalid name");
+            if (updatedProduct == null || undefined) {
+                return new ErrorRespose("some details missing");
             }
 
-            this.products.forEach(element => {
-                if (element.productId == productId) {
-                    element.name = name
+            if (updatedProduct.name != null) {
+                if (updatedProduct.name.length == 0 || updatedProduct.name.length > 15 || !this.regex.test(updatedProduct.name.toString())) {
+                    return new ErrorRespose("invalid name");
                 }
-            });
-
-            return new SuccessResponse(this.products);
-        } catch (error) {
-            return new ErrorRespose(error);
-        }
-    }
-
-    updateQuantity(productId: String, quantity: number): any {
-
-        try {
-            if(productId == null || undefined){
-                return new ErrorRespose("invalid product id");
             }
 
-            if(quantity < 0){
+            if (updatedProduct.quantity != null && updatedProduct.quantity < 0) {
                 return new ErrorRespose("invalid quantity");
             }
 
-            this.products.forEach(element => {
-                if (element.productId == productId) {
-                    element.quantity = quantity;
-                }
-            });
+            if (this.products.find(product => product.productId == productId)) {
+                Object.assign(this.products.find(product => product.productId == productId), updatedProduct);
+            }
 
             return new SuccessResponse(this.products);
         } catch (error) {
