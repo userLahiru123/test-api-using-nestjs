@@ -1,19 +1,19 @@
 import { Product } from "src/features/product/dto/product.entity";
 
 export class SuccessResponse {
-    status: String="succesess";
-    data: Product[]
+    private readonly status: String = "succesess";
+    private data: any
 
-    constructor(data:Product[]){
-       this.data = data;
+    constructor(data: any) {
+        this.data = data;
     }
 }
 
-export class ErrorRespose{
-    status :String = "error";
-    error: String
-    
-    constructor(errorMessage:String){
+export class ErrorRespose {
+    private readonly status: String = "error";
+    private error: String
+
+    constructor(errorMessage: String) {
         this.error = errorMessage;
     }
 }
