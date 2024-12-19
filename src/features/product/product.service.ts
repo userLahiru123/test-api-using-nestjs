@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { Product } from './dto/product.entity';
+import { SuccessResponse } from 'src/utils/custom_response';
 
 @Injectable()
 export class ProductService {
 
-    private products: Product[] = [];
-    private product: Product;
+    private products: Product[] = [new Product("p001", "rice", 2), new Product("p002", "sugae", 4)];
+
+    all():any{
+        return new SuccessResponse(this.products);
+    }
+
 
     saveProduct(product: Product): void {
         this.products.push(product);
