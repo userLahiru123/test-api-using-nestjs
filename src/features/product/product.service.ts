@@ -42,6 +42,10 @@ export class ProductService {
                 return new ErrorRespose("invalid product id");
             }
 
+            if(this.isProductIdContains(productId)){
+                return new ErrorRespose("product id not contains");
+            }
+
             this.selectedProduct = this.products.find(product => product.productId === productId);
             if (this.selectedProduct == null || undefined) {
                 return new SuccessResponse("empty");
@@ -68,6 +72,11 @@ export class ProductService {
             if (productId == null || undefined) {
                 return new ErrorRespose("invalid product id");
             }
+
+            if(this.isProductIdContains(productId)){
+                return new ErrorRespose("product id not contains");
+            }
+
             this.products = this.products.filter(product => product.productId != productId);
 
             return new SuccessResponse(this.products);
@@ -82,9 +91,13 @@ export class ProductService {
                 return new ErrorRespose("invalid product id");
             }
 
-            if (updatedProduct == null || undefined) {
-                return new ErrorRespose("some details missing");
+            if(this.isProductIdContains(productId)){
+                return new ErrorRespose("product id not contains");
             }
+
+            // if (updatedProduct == null || undefined) {
+            //     return new ErrorRespose("some details missing");
+            // }
 
             if (updatedProduct.name != null) {
                 if (updatedProduct.name.length == 0 || updatedProduct.name.length > 15 || !this.regex.test(updatedProduct.name.toString())) {
