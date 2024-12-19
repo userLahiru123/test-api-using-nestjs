@@ -42,7 +42,7 @@ export class ProductService {
                 return new ErrorRespose("invalid product id");
             }
 
-            if(this.isProductIdContains(productId)){
+            if(!this.isProductIdContains(productId)){
                 return new ErrorRespose("product id not contains");
             }
 
@@ -73,7 +73,7 @@ export class ProductService {
                 return new ErrorRespose("invalid product id");
             }
 
-            if(this.isProductIdContains(productId)){
+            if(!this.isProductIdContains(productId)){
                 return new ErrorRespose("product id not contains");
             }
 
@@ -91,13 +91,9 @@ export class ProductService {
                 return new ErrorRespose("invalid product id");
             }
 
-            if(this.isProductIdContains(productId)){
+            if(!this.isProductIdContains(productId)){
                 return new ErrorRespose("product id not contains");
             }
-
-            // if (updatedProduct == null || undefined) {
-            //     return new ErrorRespose("some details missing");
-            // }
 
             if (updatedProduct.name != null) {
                 if (updatedProduct.name.length == 0 || updatedProduct.name.length > 15 || !this.regex.test(updatedProduct.name.toString())) {
