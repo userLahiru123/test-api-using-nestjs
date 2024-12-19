@@ -9,6 +9,14 @@ export class ProductService {
     readonly regex = /^[A-Za-z]+$/;
     private selectedProduct: Product;
 
+    isProductIdContains(productId: String): boolean {
+        this.products.forEach(product=>{
+            if(product.productId == productId){
+                return true;
+            }
+        });
+        return false;
+    }
 
     saveProduct(product: Product): any {
         try {
